@@ -27,6 +27,7 @@ void MainWindow::actionAC(Fl_Widget*v, void *o)
 {
     /*to do to flush*/
     ((MainWindow*)o)->Output->action_ac();
+    ((MainWindow*)o)->Result->setResult("");
 }
 
 void MainWindow::actionDEL(Fl_Widget*v, void *o)
@@ -48,7 +49,7 @@ void MainWindow::getFunc(Fl_Widget*v, void *o)
 
 void MainWindow::actionEqual(Fl_Widget*v, void *o)
 {
-    /*to do to flush*/
+    /*get the result */
    string input =  ((MainWindow*)o)->Output->getNow();
    ((MainWindow*)o)->Output->push();
    input = cleanBlankFilter(input);
@@ -94,14 +95,14 @@ MainWindow::MainWindow(int w, int h,const char* title):Fl_Window(w,h,title)
     row = 2;
     line = 3;
     float ratio = 0.5;
-    CalcCore = new Calc("");
+    CalcCore = new Calc("0");
     Output = new Calc_Output(length/2-100,0,200,60,"Input");
     Result = new showResult(length/2-100,80,200,60,"Result");
     UpButton = new Calc_Button(length/2-50,150,buttonLen,buttonHei,"@8>");
     UpButton->callback(actionUp,this);
     DrawButton = new Calc_Button(length/2+200,150,buttonLen,buttonHei,"Draw");
     DrawButton->callback(getNew,this);
-    FuncButton = new Calc_Button(length/2-200,150,buttonLen,buttonHei,"Draw");
+    FuncButton = new Calc_Button(length/2-200-buttonLen,150,buttonLen,buttonHei,"Func");
     FuncButton->callback(getFunc,this);
     DownButton = new Calc_Button(length/2-50,150+buttonHei+20,buttonLen,buttonHei,"@2>");
     DownButton->callback(actionDown,this);
@@ -111,6 +112,7 @@ MainWindow::MainWindow(int w, int h,const char* title):Fl_Window(w,h,title)
     signs.push_back("/");
     signs.push_back("DEL");//4
     signs.push_back("AC");//5
+    //for the first line
 
     signs.push_back("4");
     signs.push_back("5");
@@ -118,6 +120,7 @@ MainWindow::MainWindow(int w, int h,const char* title):Fl_Window(w,h,title)
     signs.push_back("*");
     signs.push_back("(");
     signs.push_back(")");
+    //for the second line
 
     signs.push_back("1");
     signs.push_back("2");
@@ -125,12 +128,15 @@ MainWindow::MainWindow(int w, int h,const char* title):Fl_Window(w,h,title)
     signs.push_back("-");
     signs.push_back("!");
     signs.push_back("ANS");//17
+    //for the third line
 
     signs.push_back("0");
     signs.push_back(".");
     signs.push_back("%");
     signs.push_back("+");
     signs.push_back("=");//22
+    //for the forth line
+
         for( row= 1;row <= 4;++row)//about 9
         {
             for(line = 1;line <= 6; ++line)

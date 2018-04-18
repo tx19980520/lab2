@@ -33,12 +33,8 @@ class DrawWindow:public Fl_Window{
   private:
     int boxlen = 80;
     int boxhei = 60;
-    int x = 400;
-    int y = 20;
     Calc *core;
     vector<drawnode> data;
-    vector<Fl_Box*> boxes;
-    void travelseral(node *root,int x,int y);
-    static void drawTree(Fl_Widget*,void*);
+    void travelseral(node *root,int x,int y,int xlen);//遍历结构树并且画图
 };
 #endif

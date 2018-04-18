@@ -1,18 +1,20 @@
 #include "draw_window.h"
 #include <FL/fl_draw.H>
+#include <cmath>
 using namespace std;
 
-void DrawWindow::drawTree(Fl_Widget*v,void*o)
-{
-    //((DrawWindow*)o)->draw();
-}
 void DrawWindow::draw()
 {
+    int level = core->getRoot()->level-1;
+    if(level == 0)
+        return;
+    int total = pow(2,level); 
+    this->resize(0,0,total*(boxlen+15)+100,level*(boxhei+30)+100);
     fl_begin_line();
-        this->travelseral(core->getRoot(),this->x,this->y);
+        this->travelseral(core->getRoot(),total*(boxlen+15)/2+50,30,total*(boxlen+15)/4+25);
     fl_end_line();
 }
-void DrawWindow::travelseral(node *root,int x,int y)//fathers pos
+void DrawWindow::travelseral(node *root,int x,int y,int xlen)//fathers pos
 {
     if(root == NULL)
         return;
@@ -53,26 +55,37 @@ void DrawWindow::travelseral(node *root,int x,int y)//fathers pos
            node.word = "ANS";
            break;
            }
+        case X:
+        {
+            node.word = "x";
+        }
         default:{
             break;
         }
    }
-    node.x = x-30;
+    node.x = x-boxlen/2;
     node.y = y;
-    node.red = 0;
+    node.red = root->isRight;
     data.push_back(node);
     int i = data.size()-1;
     if(root->left != NULL)
-        fl_line(data[i].x+boxlen/2,data[i].y+boxhei,data[i].x+boxlen/2-45,data[i].y+80);
+    {
+        fl_color(FL_BLACK);
+        fl_line(data[i].x+boxlen/2,data[i].y+boxhei,x-xlen,data[i].y+boxhei+30);
+    }
     if(root->right != NULL)
-        fl_line(data[i].x+boxlen/2,data[i].y+boxhei,data[i].x+boxlen/2+45,data[i].y+80);
+    {
+        fl_color(FL_BLACK);
+        fl_line(data[i].x+boxlen/2,data[i].y+boxhei,x+xlen,data[i].y+boxhei+30);
+    }
+        
         Fl_Color f;
         f = FL_BLACK;
-        if(data[i].red)
+        if(!data[i].red)
             f = FL_RED;
         fl_rect(data[i].x,data[i].y,boxlen,boxhei,f);
         fl_draw(data[i].word.c_str(),data[i].x+5,data[i].y+boxhei/2);
-    this->travelseral(root->left,x-45,y+80);
-    this->travelseral(root->right,x+45,y+80);
+    this->travelseral(root->left,x-xlen,y+boxhei+30,xlen/2);
+    this->travelseral(root->right,x+xlen,y+boxhei+30,xlen/2);
     
 }

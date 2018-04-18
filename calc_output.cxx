@@ -6,9 +6,9 @@
 using namespace std;
 void Calc_Output::getBack()
 {
-    if(pos == -1)
+    if(pos == -1 || pos == 0)
         return;
-    pos --;
+    pos--;
     if(!val)
     delete val;
     val = new char [sizeof(buffer[pos])];
@@ -46,12 +46,13 @@ void Calc_Output::action_ac()
     this->value("");
     if(!val)
     delete val;
+    pos = -1;
     buffer.clear();
 }
 
 void Calc_Output::action_del()
 {
-    this->cut(1);
+    this->cut(-1);
     if(!val)
     delete val;
     val = new char [strlen(this->value())];

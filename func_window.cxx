@@ -1,6 +1,7 @@
 #include <FL/fl_draw.H>
 #include "func_window.h"
 #include "calculator.h"
+#include "filter.h"
 using namespace std;
 void FuncDraw::draw()
 {
@@ -10,7 +11,7 @@ void FuncDraw::draw()
         fl_begin_line();//在没有初始化的时候先画坐标轴，我们的原点在400 350
         fl_line(400,100,400,600);
         fl_line(150,350,650,350);
-        //我们的坐标比例氏横轴为100 :1
+        //我们的坐标比例氏横轴为50 :1
         fl_draw("-5",405,600);
         fl_draw("-4",405,550);
         fl_draw("-3",405,500);
@@ -55,8 +56,7 @@ void FuncDraw::draw()
             cout << "MAX" <<endl;
             continue;
         }
-        int y = 350-tmp.second*50;
-        //cout << x << " " << y << endl;
+        int y = 350-tmp.second * 50;
         if(i ==150)
         {
             lastx = i;
@@ -77,8 +77,18 @@ void FuncDraw::draw()
 }
 void FuncDraw::create(const char* a)
 {
-    string m = a;
-    this->core->create(m);
+    string input = a;
+    input = cleanBlankFilter(input);
+	if(input=="")
+    {
+        return;
+    }
+	Final result = formatCharFilter(input);
+	if (extraCharFilter(input) || !result.first)//表示是异常输入
+    {
+        return;
+    }
+    this->core->create(result.second);
     init = true;
     this->redraw();
 }

@@ -30,6 +30,7 @@ extern const double MAX;//在计算过程中出错一律返回MAX，之后我们
 extern bool calcError;
 double fac(double x);
 struct node {
+		int level;
 		Type character;
 		node *left;
 		node *right;
@@ -46,6 +47,7 @@ struct node {
 			right = rc;
 			buff = b;
 			isFac = fac;
+			level = 1;
 			isRight = true;
 		}
 	};
@@ -59,12 +61,35 @@ class Calc {
 	point result(node *t,double x);
 	double getValue(string s);//对于某个节点的值的计算
 public:
-	Calc(string input) { int position = 0; root = create(input, position); }
+	Calc(string input) { int position = 0; root = create(input, position); getLevel(root);}
 	void deleteNode(node *n);
 	~Calc()
 	{
 		deleteNode(root);
 	};
+	void getLevel(node* t)
+	{
+		int l = 1;
+		int r = 1;
+		if (t == NULL) return;
+		if(t->left != NULL)
+		{
+			getLevel(t->left);
+			l = t->left->level;
+		}
+		if(t->right != NULL)
+		{
+			getLevel(t->right);
+			r = t->right->level;
+		}
+		if(t->left == NULL && t->right == NULL)
+		{
+			t->level = 1;
+		}
+		else{
+			t->level = (l>r)?l+1:r+1;
+		}
+	}
 	void create(string input)
 	{
 		node * tmp = root;
@@ -74,6 +99,7 @@ public:
 		this->root = NULL;
 		int position = 0;
 		this->root = create(input, position);
+		getLevel(root);
 		//cout << root->character<<" "<<root->left->character << " " <<root->right->character <<endl;
 	}
 	node* getRoot();//返回根节点供前端遍历生成语法树

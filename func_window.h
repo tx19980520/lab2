@@ -15,7 +15,7 @@ class FuncDraw:public Fl_Widget{
             init = false;
         };
         void create(const char*);
-        void draw();
+        void draw();//for draw the function
     private:
         Calc *core;
         bool init;
@@ -33,7 +33,7 @@ class FuncWindow:public Fl_Window{
         };
     private:
         FuncDraw *funcDraw;
-        Calc *core;
+        Calc *core;//我所有的有关计算的东西都是用的一棵树
         Fl_Input *funcInput;
         Fl_Button *funcButton;
         static void drawFunc(Fl_Widget*,void*);

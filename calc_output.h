@@ -20,12 +20,12 @@ class Calc_Output:public Fl_Output{
         }
         /*change to string in order to be friendly for the back-end*/
         string getNow();
-        void getToken(const char*);
-        void getBack();
-        void getFront();
-        void action_del();
-        void action_ac();
-        void push();
+        void getToken(const char*);//get the token added;
+        void getBack();//return to the latest expression
+        void getFront();//point to the express newer than now 
+        void action_del();//del the char 
+        void action_ac();//ac is clean all
+        void push();//make the new one
         
 };
 #endif
